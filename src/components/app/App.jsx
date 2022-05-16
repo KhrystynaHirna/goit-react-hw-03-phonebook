@@ -33,7 +33,27 @@ state = {
       contacts: prevState.contacts.filter(item => item.id !== id)
     }))
   }
+  componentDidUpdate(prevProps, prevState) {
+    console.log('Component did update');
+    console.log(prevProps);
+    console.log(prevState);
+    console.log(this.state);
 
+    if (this.state.contacts !== prevState.contacts) {
+      console.log('Contacts update');
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+  componentDidMount() {
+    console.log('App component did mount')
+
+    const contacts = localStorage.getItem('contacts');
+    const parcedContacts = JSON.parse(contacts);
+    // console.log(parcedContacts);
+    if (parcedContacts) {
+      this.setState({ contacts: parcedContacts });
+    }
+  }
 
   render() {
     const filter = this.state.contacts.filter(contact =>
